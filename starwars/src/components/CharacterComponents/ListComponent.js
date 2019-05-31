@@ -1,6 +1,7 @@
 import React from 'react';
 import CharacterComponent from './CharacterComponent';
 import JwPagination from 'jw-react-pagination';
+import './List.css';
 
 class ListComponent extends React.Component {
   constructor(props){
@@ -36,7 +37,21 @@ class ListComponent extends React.Component {
         return res.json();
       })
       .then(data => {
-        this.setState({ starwarsChars: [...data.results, data.results] });
+        this.setState({ starwarsChars: [...data.results, {
+          "name": "Luke Skywalker", 
+          "height": "172", 
+          "mass": "77", 
+          "skin_color": "fair", 
+          "eye_color": "blue", 
+          "birth_year": "19BBY", 
+          "gender": "male", 
+          "homeworld": "https://swapi.co/api/planets/1/", 
+          "created": "2014-12-09T13:50:51.644000Z", 
+          "edited": "2014-12-20T21:17:56.891000Z", 
+          "url": "https://swapi.co/api/people/1/"}] });
+          // this.setState({ 
+        //   starwarsChars: data.results
+        // })
       })
       .catch(err => {
         throw new Error(err);
@@ -44,6 +59,7 @@ class ListComponent extends React.Component {
   };
 
   render() {
+    
     return (
       <div className="characters-wrapper">
       {
@@ -53,7 +69,16 @@ class ListComponent extends React.Component {
           )
         })
       }
-      <JwPagination items={this.state.starwarsChars} onChangePage={this.handlePageChange} />
+      <div className="character-container">
+        <JwPagination items={this.state.starwarsChars} onChangePage={this.handlePageChange}
+          labels={{
+                first: '<<',
+                last: '>>',
+                previous: '<',
+                next: '>'
+            }} pageSize={1}
+        />
+      </div>
       </div>
     )
 }

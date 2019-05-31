@@ -6,7 +6,9 @@ const CharacterComponent = (props) => {
     <div className="character-container"> 
       <div className="header">
         <div className="initials">
-          AM
+          {
+            props.character.name[0]
+          }
         </div>
         <div className="name">
           {props.character.name}
@@ -17,7 +19,7 @@ const CharacterComponent = (props) => {
           <span> Gender: </span> {props.character.gender}
         </div>
         <div className="attribute">
-          <span> Height: </span> {props.character.heigth}
+          <span> Height: </span> {props.character.height}
         </div>
         <div className="attribute">
           <span> Skin Color: </span> {props.character.skin_color}
