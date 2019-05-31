@@ -2,6 +2,20 @@ import React from 'react';
 import CharacterComponent from './CharacterComponent';
 import JwPagination from 'jw-react-pagination';
 import './List.css';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 class ListComponent extends React.Component {
   constructor(props){
@@ -12,9 +26,12 @@ class ListComponent extends React.Component {
       // exampleItems,
       pageSize: 3,
       initialPage: 1,
-      pageOfItems: []
+      pageOfItems: [],
+      currenItemClicked: []
     }
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
   componentDidMount() {
@@ -58,27 +75,52 @@ class ListComponent extends React.Component {
       });
   };
 
+  handleOpenModal(currentItem) {
+    this.setState({modalIsOpen: true, currenItemClicked: currentItem});
+  }
+
+  handleCloseModal() {
+    this.setState({modalIsOpen: false});
+  }
+
   render() {
     
     return (
       <div className="characters-wrapper">
-      {
-        this.state.pageOfItems.map( (character, key) => {
-          return (
-            <CharacterComponent key={key} character={character}/>
-          )
-        })
-      }
-      <div className="character-container">
-        <JwPagination items={this.state.starwarsChars} onChangePage={this.handlePageChange}
-          labels={{
-                first: '<<',
-                last: '>>',
-                previous: '<',
-                next: '>'
-            }} pageSize={1}
-        />
-      </div>
+        {
+          this.state.pageOfItems.map( (character, key) => {
+            return (
+              <CharacterComponent key={key} character={character} 
+                openModal={this.handleOpenModal}
+                closeModal={this.handleCloseModal} 
+                modalIsOpen={this.state.modalIsOpen}
+              />
+            )
+          })
+        }
+        <div className="character-container">
+          <JwPagination items={this.state.starwarsChars} onChangePage={this.handlePageChange}
+            labels={{
+                  first: '<<',
+                  last: '>>',
+                  previous: '<',
+                  next: '>'
+              }} pageSize={1}
+          />
+        </div>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.handleAfterOpenModal}
+          onRequestClose={this.handleCloseModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+
+          <p> Name: {this.state.currenItemClicked.name} </p>
+          <p> Birth Year: {this.state.currenItemClicked.birth_year} </p>
+          <p> Eye Color: {this.state.currenItemClicked.eye_color} </p>
+
+        </Modal>
       </div>
     )
 }

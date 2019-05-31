@@ -3,7 +3,7 @@ import './Character.css';
 
 const CharacterComponent = (props) => {
   return (
-    <div className="character-container"> 
+    <div className="character-container" onClick={() => props.openModal(props.character)}> 
       <div className="header">
         <div className="initials">
           {
@@ -11,7 +11,7 @@ const CharacterComponent = (props) => {
           }
         </div>
         <div className="name">
-          {props.character.name}
+          <h2> {props.character.name} </h2>
         </div>
       </div>
       <div className="description">
@@ -29,7 +29,6 @@ const CharacterComponent = (props) => {
           <span> Mass: </span> {props.character.mass}
         </div>
       </div>
-      
     </div>
   )
 }
