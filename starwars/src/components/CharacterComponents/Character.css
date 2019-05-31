@@ -1,0 +1,32 @@
+.character-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+}
+
+.description {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.character-container .description .attribute {
+  width: 50%;
+  text-align: center;
+}
+
+.character-container .header .initials {
+  width: 10%;
+}
+
+.character-container .header .name {
+  width: 90%;
+  padding-left: -10%;
+  text-align: center;
+}
