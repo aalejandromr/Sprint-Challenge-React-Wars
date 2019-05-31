@@ -1,24 +1,30 @@
 import React from 'react';
 import CharacterComponent from './CharacterComponent';
+import JwPagination from 'jw-react-pagination';
 
 class ListComponent extends React.Component {
   constructor(props){
     super(props);
+    // let exampleItems = [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
     this.state = {
       starwarsChars: [],
-      currentPage: 1,
-      perPage: 3
+      // exampleItems,
+      pageSize: 3,
+      initialPage: 1,
+      pageOfItems: []
     }
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentDidMount() {
     this.getCharacters('https://swapi.co/api/people/');
   }
 
-  handlePageChange() {
+  handlePageChange(pageOfItems) {
     // this.setState({
     //   currentPage: 
     // })
+    this.setState({ pageOfItems: pageOfItems});
   }
 
   getCharacters = URL => {
@@ -30,7 +36,7 @@ class ListComponent extends React.Component {
         return res.json();
       })
       .then(data => {
-        this.setState({ starwarsChars: data.results });
+        this.setState({ starwarsChars: [...data.results, data.results] });
       })
       .catch(err => {
         throw new Error(err);
@@ -41,12 +47,13 @@ class ListComponent extends React.Component {
     return (
       <div className="characters-wrapper">
       {
-        this.state.starwarsChars.map( (character, key) => {
+        this.state.pageOfItems.map( (character, key) => {
           return (
             <CharacterComponent key={key} character={character}/>
           )
         })
       }
+      <JwPagination items={this.state.starwarsChars} onChangePage={this.handlePageChange} />
       </div>
     )
 }
